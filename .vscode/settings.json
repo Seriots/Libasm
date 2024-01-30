@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"*.toml": "toml",
+		"*.s": "asm-intel-x86-generic",
+		"stdint.h": "c"
+	}
+}

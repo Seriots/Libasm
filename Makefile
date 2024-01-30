@@ -5,6 +5,7 @@ EXECUTABLE  = 	test
 define SRCS :=
 	test.s
 	helloworld.s
+	ft_strlen.s
 
 endef
 SRCS := $(strip $(SRCS))
