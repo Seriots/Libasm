@@ -9,6 +9,8 @@ define SRCS :=
 	ft_strlen.s
 	ft_strcpy.s
 	ft_strcmp.s
+	ft_write.s
+	ft_read.s
 
 endef
 SRCS := $(strip $(SRCS))
@@ -27,7 +29,7 @@ LDFLAGS		=
 LIB_PATH	=	./lib
 LIB_NAME	=	asm
 
-CC			=	gcc
+CC			=	clang
 CFLAGS		=	-Wall -Wextra -Werror
 
 SRC_MAIN	=	main.c

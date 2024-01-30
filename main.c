@@ -2,11 +2,18 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 extern size_t ft_strlen(char *str);
 extern char *ft_strcpy(char *dest, const char *src);
 extern int ft_strcmp(const char *s1, const char *s2);
-extern char *string_test(char *dest);
+extern ssize_t ft_write(int fd, const void *buf, size_t count);
+extern ssize_t ft_read(int fd, void *buf, size_t count);
 
 const char *GREEN = "\e[0;32m";
 const char *RED = "\e[0;31m";
@@ -86,6 +93,67 @@ void strcmp_test()
 	printf("TEST: strcmp('', 'Witness') -> standard = %d / ft = %d -> %s%s%s", strcmp(empty, wit), ft_strcmp(empty, wit), checkres ? GREEN : RED, checkres ? "OK\n" : "KO\n", RESET);
 }
 
+void write_test()
+{
+	int ret = 0;
+
+	printf("\n-----------Test Write------------\n");
+
+	printf("\n");
+
+	ret = write(1, "hello world", 11);
+	perror(" -> write");
+	printf("-> TEST: write(1, 'hello world', 11) -> standard = %d\n", ret);
+
+	ret = ft_write(1, "hello world", 11);
+	perror(" -> write");
+	printf("-> TEST: ft_write(1, 'hello world', 11) -> standard = %d\n", ret);
+
+	printf("\n");
+	ret = write(4, "hello world", 11);
+	perror(" -> write");
+	printf("-> TEST: write(4, 'hello world', 11) -> standard = %d\n", ret);
+
+	ret = ft_write(4, "hello world", 11);
+	perror(" -> write");
+	printf("-> TEST: ft_write(1, 'hello world', 11) -> standard = %d\n", ret);
+
+	printf("\n");
+	ret = write(1, "hello world", 5);
+	perror(" -> write");
+	printf("-> TEST: write(1, 'hello world', 5) -> standard = %d\n", ret);
+
+	ret = ft_write(1, "hello world", 5);
+	perror(" -> write");
+	printf("-> TEST: ft_write(1, 'hello world', 5) -> standard = %d\n", ret);
+	printf("\n");
+}
+
+void read_test()
+{
+	int fd = open("test.txt", O_RDONLY);
+	int fd2 = open("test.txt", O_WRONLY);
+	char buf[100];
+
+	printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", ft_read(fd, 0, 10), buf);
+	perror(" -> read");
+
+		printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", read(fd, 0, 10), buf);
+	perror(" -> read");
+
+		printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", ft_read(fd, buf, 10), buf);
+	perror(" -> read");
+
+		printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", read(fd, buf, 10), buf);
+	perror(" -> read");
+
+			printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", ft_read(fd2, buf, 10), buf);
+	perror(" -> read");
+
+		printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", read(fd2, buf, 10), buf);
+	perror(" -> read");
+}
+
 int main()
 {
 	strlen_test();
@@ -93,6 +161,11 @@ int main()
 	strcpy_test();
 
 	strcmp_test();
+
+	write_test();
+
+	read_test();
+
 
 	return 0;
 }

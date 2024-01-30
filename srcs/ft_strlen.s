@@ -2,7 +2,7 @@ section .text
     global ft_strlen
 
 ft_strlen:
-    ; Argument de la fonction (char *str)
+    ; Prototype int (char *str)
 
 	mov rcx, 0 ; initialisation du compteur
 

@@ -2,7 +2,7 @@ section .text
 	global ft_strcpy
 
 ft_strcpy:
-	; Prototype (char *dest, char *src)
+	; Prototype char *(char *dest, char *src)
 	
 	mov rcx, 0 ; initialisation du compteur
 
