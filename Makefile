@@ -4,6 +4,7 @@ EXECUTABLE  = 	test
 
 define SRCS :=
 	test.s
+	helloworld.s
 
 endef
 SRCS := $(strip $(SRCS))
@@ -17,12 +18,12 @@ DEPS		=	$(OBJS:.o=.d)
 AS			= 	nasm
 LD			=	ld
 ASFLAGS		= 	-f elf64
-LDFLAGS		=	-fPIE
+LDFLAGS		=
 
 LIB_PATH	=	./lib
 LIB_NAME	=	asm
 
-CC			=	cc
+CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror
 
 SRC_MAIN	=	main.c
