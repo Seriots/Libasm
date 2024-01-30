@@ -2,20 +2,17 @@ section .text
     global ft_strlen
 
 ft_strlen:
-    ; Argument de la fonction
-    ; rdi: pointeur vers une chaîne de caractères (char *)
-    ; Retourne la première lettre de la chaîne en sortie (dans al)
+    ; Argument de la fonction (char *str)
 
-    ; Vérifier si le pointeur est nul
-	mov rcx, 0
+	mov rcx, 0 ; initialisation du compteur
 
 .loop:
-    cmp byte [rdi + rcx], 0
-    je   .end
+    cmp byte [rdi + rcx], 0 ; regarde si le caractere a la position rdi (addr de str) + rcx == 0
+    je   .end ; si oui, on sort de la boucle
 
-	add rcx, 1
-	jmp  .loop
+	add rcx, 1 ; si non on incremente le compteur
+	jmp  .loop ; again
 
 .end:
-	mov rax, rcx
+	mov rax, rcx ; on met le compteur dans rax
     ret

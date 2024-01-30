@@ -4,12 +4,17 @@ section .text
 test:
     ; recupere la valeur d'entrée et la mettre dans eax
 
-    ; Convertir le flottant (xmm0) en entier et ajouter aux entiers
-    cvttss2si rax, xmm0
 
+    movzx rax, byte [rsp + 8]
     add rax, rdi
     add rax, rsi
     add rax, rdx
+    add rax, rcx
+    add rax, r8
+    add rax, r9
+    movzx rbx, byte [rsp + 16]
+    add rax, rbx
+
 
     ; Terminer la fonction et retourner à l'appelant
     ret

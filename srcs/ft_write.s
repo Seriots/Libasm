@@ -1,12 +1,9 @@
-
 section .text
-    global hello_world
+    global ft_write
 
-hello_world:
+ft_write:
     ; Appel système pour écrire sur la sortie standard (1)
     mov rax, 1
     syscall             ; Appel système
 
     ret
-
-
