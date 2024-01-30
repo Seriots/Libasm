@@ -8,6 +8,7 @@ define SRCS :=
 	helloworld.s
 	ft_strlen.s
 	ft_strcpy.s
+	ft_strcmp.s
 
 endef
 SRCS := $(strip $(SRCS))
@@ -49,16 +50,16 @@ _NO_COLOR	= \033[0m
 
 .PHONY: all clean fclean re
 
-all: $(NAME)
+all: $(LIB_DIR)/$(NAME)
 
-libasm: $(NAME)
+libasm: $(LIB_DIR)/$(NAME)
 
-$(NAME): $(OBJS)
+$(LIB_DIR)/$(NAME): $(OBJS)
 	@if [ ! -d $(LIB_DIR) ]; then \
 		mkdir -p  $(LIB_DIR); \
 		echo "\n$(_BLUE)$(LIB_DIR): Create$(_NO_COLOR)"; \
 	fi
-	ar rcs $(LIB_DIR)/$@ $^
+	ar rcs $@ $^
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.s
 	@if [ ! -d $(dir $@) ]; then \
@@ -74,8 +75,8 @@ $(OBJS_DIR)/%.o: %.c
 	fi
 	$(CC) $(CFLAGS) -MMD -o $@ -c $<
 
-$(EXECUTABLE): $(NAME) $(OBJ_MAIN)
-	$(CC) $(CFLAGS) -o $@ $(LIB_PATH)/$^ -L$(LIB_PATH) -l$(LIB_NAME)
+$(EXECUTABLE): $(LIB_DIR)/$(NAME) $(OBJ_MAIN)
+	$(CC) $(CFLAGS) -o $@ $^ -L$(LIB_PATH) -l$(LIB_NAME)
 
 clean:
 	rm -Rf $(OBJS_DIR) 2> /dev/null || true
