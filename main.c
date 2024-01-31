@@ -9,6 +9,14 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+
+typedef struct s_list
+{
+	void *data;
+	struct s_list *next;
+} t_list;
+
+
 extern size_t ft_strlen(char *str);
 extern char *ft_strcpy(char *dest, const char *src);
 extern int ft_strcmp(const char *s1, const char *s2);
@@ -16,6 +24,10 @@ extern ssize_t ft_write(int fd, const void *buf, size_t count);
 extern ssize_t ft_read(int fd, void *buf, size_t count);
 extern char *ft_strdup(const char *s);
 extern int ft_atoi_base(char *str, char *base);
+extern int test(t_list *animal);
+extern void ft_list_push_front(t_list **begin_list, void *data);
+extern int ft_list_size(t_list *begin_list);
+extern int ft_list_sort(t_list **begin_list, int (*cmp)());
 
 const char *GREEN = "\e[0;32m";
 const char *RED = "\e[0;31m";
@@ -231,7 +243,29 @@ int main()
 
 	//strdup_test();
 
-	atoi_base_test();
+	//atoi_base_test();
 
+	t_list *start = NULL;
+	t_list *start2 = NULL;
+
+	ft_list_push_front(&start, "yolo");
+	ft_list_push_front(&start, "hello");
+	ft_list_push_front(&start, "meteo");
+	ft_list_push_front(&start, "palao");
+
+	if (start != NULL)
+	{
+		printf("-> %s\n", (char *)start->data);
+	}
+
+	printf("-> %d\n", ft_list_size(start));
+	printf("-> %d\n", ft_list_size(start2));
+
+	printf("-> debug = %d\n", ft_list_sort(&start, ft_strcmp));
+
+	if (start != NULL)
+	{
+		printf("-> %s\n", (char *)start->data);
+	}
 	return 0;
 }

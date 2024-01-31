@@ -10,6 +10,10 @@ define SRCS :=
 	ft_read.s
 	ft_strdup.s
 	ft_atoi_base.s
+	ft_list_push_front.s
+	ft_list_size.s
+	ft_list_sort.s
+	test.s
 
 endef
 SRCS := $(strip $(SRCS))
@@ -54,6 +58,8 @@ _NO_COLOR	= \033[0m
 all: $(LIB_DIR)/$(NAME)
 
 libasm: $(LIB_DIR)/$(NAME)
+
+bonus: all
 
 $(LIB_DIR)/$(NAME): $(OBJS)
 	@if [ ! -d $(LIB_DIR) ]; then \
