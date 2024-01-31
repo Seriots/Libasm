@@ -14,6 +14,7 @@ extern char *ft_strcpy(char *dest, const char *src);
 extern int ft_strcmp(const char *s1, const char *s2);
 extern ssize_t ft_write(int fd, const void *buf, size_t count);
 extern ssize_t ft_read(int fd, void *buf, size_t count);
+extern char *ft_strdup(const char *s);
 
 const char *GREEN = "\e[0;32m";
 const char *RED = "\e[0;31m";
@@ -156,16 +157,27 @@ void read_test()
 
 int main()
 {
-	strlen_test();
+	// strlen_test();
 
 	strcpy_test();
 
-	strcmp_test();
+	// strcmp_test();
 
-	write_test();
+	// write_test();
 
-	read_test();
+	// read_test();
 
+	const char *a = "";
+
+	printf("a = %s\n", a);
+	char *b = ft_strdup(a);
+	printf("a = %s, b = %s\n", a, b);
+
+	// a[0] = 'b';
+
+	// printf("a = %s, b = %s\n", a, b);
+
+	free(b);
 
 	return 0;
 }

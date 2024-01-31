@@ -3,14 +3,12 @@ NAME		=	libasm.a
 EXECUTABLE  = 	test
 
 define SRCS :=
-	test.s
-	string_test.s
-	helloworld.s
 	ft_strlen.s
 	ft_strcpy.s
 	ft_strcmp.s
 	ft_write.s
 	ft_read.s
+	ft_strdup.s
 
 endef
 SRCS := $(strip $(SRCS))
@@ -30,7 +28,7 @@ LIB_PATH	=	./lib
 LIB_NAME	=	asm
 
 CC			=	clang
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -g3
 
 SRC_MAIN	=	main.c
 OBJ_MAIN	=	$(addprefix $(OBJS_DIR)/,$(SRC_MAIN:.c=.o))
