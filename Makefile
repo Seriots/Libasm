@@ -9,6 +9,7 @@ define SRCS :=
 	ft_write.s
 	ft_read.s
 	ft_strdup.s
+	ft_atoi_base.s
 
 endef
 SRCS := $(strip $(SRCS))
@@ -21,7 +22,7 @@ DEPS		=	$(OBJS:.o=.d)
 
 AS			= 	nasm
 LD			=	ld
-ASFLAGS		= 	-f elf64
+ASFLAGS		= 	-f elf64 -g
 LDFLAGS		=
 
 LIB_PATH	=	./lib

@@ -15,6 +15,7 @@ extern int ft_strcmp(const char *s1, const char *s2);
 extern ssize_t ft_write(int fd, const void *buf, size_t count);
 extern ssize_t ft_read(int fd, void *buf, size_t count);
 extern char *ft_strdup(const char *s);
+extern int ft_atoi_base(char *str, char *base);
 
 const char *GREEN = "\e[0;32m";
 const char *RED = "\e[0;31m";
@@ -135,6 +136,7 @@ void read_test()
 	int fd = open("test.txt", O_RDONLY);
 	int fd2 = open("test.txt", O_WRONLY);
 	char buf[100];
+	printf("\n-----------Test Read------------\n");
 
 	printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", ft_read(fd, 0, 10), buf);
 	perror(" -> read");
@@ -155,17 +157,10 @@ void read_test()
 	perror(" -> read");
 }
 
-int main()
+void strdup_test()
 {
-	// strlen_test();
+	printf("\n-----------Test Strdup------------\n");
 
-	strcpy_test();
-
-	// strcmp_test();
-
-	// write_test();
-
-	// read_test();
 
 	const char *a = "";
 
@@ -178,6 +173,65 @@ int main()
 	// printf("a = %s, b = %s\n", a, b);
 
 	free(b);
+
+	char c[5] = "";
+
+	printf("c = %s\n", c);
+	char *d = ft_strdup(c);
+	printf("c = %s, d = %s\n", c, d);
+
+	c[0] = 'd';
+
+	printf("c = %s, d = %s\n", c, d);
+
+	free(d);
+
+	char e[5] = "yolo";
+
+	printf("e = %s\n", e);
+	char *f = ft_strdup(e);
+	printf("e = %s, f = %s\n", e, f);
+
+	e[0] = 'f';
+
+	printf("e = %s, f = %s\n", e, f);
+
+	free(d);
+}
+
+void atoi_base_test()
+{
+	printf("\n-----------Test Atoi------------\n");
+
+	printf("TEST: ft_atoi_base('5120', '0123456789') -> %d\n", ft_atoi_base("5120", "0123456789"));
+	printf("TEST: ft_atoi_base('A3F', '0123456789ABCDEF') -> %d\n", ft_atoi_base("A3F", "0123456789ABCDEF"));
+	printf("TEST: ft_atoi_base('-A3F', '0123456789ABCDEF') -> %d\n", ft_atoi_base("-A3F", "0123456789ABCDEF"));
+	printf("TEST: ft_atoi_base('+A3F', '0123456789ABCDEF') -> %d\n", ft_atoi_base("+A3F", "0123456789ABCDEF"));
+	printf("TEST: ft_atoi_base('5120', '0123451') -> %d\n", ft_atoi_base("5120", "0123451"));
+	printf("TEST: ft_atoi_base('5120', '012345+') -> %d\n", ft_atoi_base("5120", "012345+"));
+	printf("TEST: ft_atoi_base('', '') -> %d\n", ft_atoi_base("", ""));
+	printf("TEST: ft_atoi_base('0000', '0') -> %d\n", ft_atoi_base("0000", "0"));
+	printf("TEST: ft_atoi_base('51A20', '0123456789') -> %d\n", ft_atoi_base("51A20", "0123456789"));
+	printf("TEST: ft_atoi_base('51A20', '01234567 89') -> %d\n", ft_atoi_base("51A20", "0123456 789"));
+	printf("TEST: ft_atoi_base('51A20', '\\n0123456789') -> %d\n", ft_atoi_base("51A20", "\n0123456789"));
+
+}
+
+int main()
+{
+	//strlen_test();
+
+	//strcpy_test();
+
+	//strcmp_test();
+
+	//write_test();
+
+	//read_test();
+
+	//strdup_test();
+
+	atoi_base_test();
 
 	return 0;
 }
