@@ -28,6 +28,7 @@ extern int test();
 extern void ft_list_push_front(t_list **begin_list, void *data);
 extern int ft_list_size(t_list *begin_list);
 extern void ft_list_sort(t_list **begin_list, int (*cmp)());
+extern void ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *));
 
 const char *GREEN = "\e[0;32m";
 const char *RED = "\e[0;31m";
@@ -269,10 +270,20 @@ int main()
 	ft_list_sort(&start, &lower);
 	ft_list_sort(&start2, &strcmp);
 
-	while (start != NULL)
+	t_list* tmp = start;
+	while (tmp != NULL)
 	{
-		printf("-> %d\n", (int)start->data);
-		start = start->next;
+		printf("-> %d\n", (int)tmp->data);
+		tmp = tmp->next;
+	}
+
+	ft_list_remove_if(&start, (void *)5, &lower, &free);
+
+	t_list* tmp2 = start;
+	while (tmp2 != NULL)
+	{
+		printf("-> %d\n", (int)tmp2->data);
+		tmp2 = tmp2->next;
 	}
 
 	while (start2 != NULL)
