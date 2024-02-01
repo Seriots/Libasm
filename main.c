@@ -24,10 +24,10 @@ extern ssize_t ft_write(int fd, const void *buf, size_t count);
 extern ssize_t ft_read(int fd, void *buf, size_t count);
 extern char *ft_strdup(const char *s);
 extern int ft_atoi_base(char *str, char *base);
-extern int test(t_list *animal);
+extern int test();
 extern void ft_list_push_front(t_list **begin_list, void *data);
 extern int ft_list_size(t_list *begin_list);
-extern int ft_list_sort(t_list **begin_list, int (*cmp)());
+extern void ft_list_sort(t_list **begin_list, int (*cmp)());
 
 const char *GREEN = "\e[0;32m";
 const char *RED = "\e[0;31m";
@@ -228,6 +228,8 @@ void atoi_base_test()
 	printf("TEST: ft_atoi_base('51A20', '\\n0123456789') -> %d\n", ft_atoi_base("51A20", "\n0123456789"));
 
 }
+int lower(void *d1, void *d2)
+{return ((long long)d1 > (long long)d2);}
 
 int main()
 {
@@ -248,24 +250,35 @@ int main()
 	t_list *start = NULL;
 	t_list *start2 = NULL;
 
-	ft_list_push_front(&start, "yolo");
-	ft_list_push_front(&start, "hello");
-	ft_list_push_front(&start, "meteo");
-	ft_list_push_front(&start, "palao");
+	ft_list_push_front(&start, (void *)5);
+	ft_list_push_front(&start, (void *)3);
+	ft_list_push_front(&start, (void *)-2);
+	ft_list_push_front(&start, (void *)4);
+	ft_list_push_front(&start, (void *)8);
+	ft_list_push_front(&start, (void *)-1);
 
-	if (start != NULL)
+	ft_list_push_front(&start2, "dfedefzef");
+	ft_list_push_front(&start2, "qswCzac");
+	ft_list_push_front(&start2, "azqaadv");
+	ft_list_push_front(&start2, "vethfbv");
+	ft_list_push_front(&start2, "fgtrfbdv");
+	ft_list_push_front(&start2, "qascW");
+	ft_list_push_front(&start2, "byrn");
+
+
+	ft_list_sort(&start, &lower);
+	ft_list_sort(&start2, &strcmp);
+
+	while (start != NULL)
 	{
-		printf("-> %s\n", (char *)start->data);
+		printf("-> %d\n", (int)start->data);
+		start = start->next;
 	}
 
-	printf("-> %d\n", ft_list_size(start));
-	printf("-> %d\n", ft_list_size(start2));
-
-	printf("-> debug = %d\n", ft_list_sort(&start, ft_strcmp));
-
-	if (start != NULL)
+	while (start2 != NULL)
 	{
-		printf("-> %s\n", (char *)start->data);
+		printf("-> %s\n", (char *)start2->data);
+		start2 = start2->next;
 	}
 	return 0;
 }

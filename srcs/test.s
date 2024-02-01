@@ -3,7 +3,8 @@ section .text
 
 test:
     ; recupere la valeur d'entrée et la mettre dans eax
-    xor rax, rax
-    mov rax, [rdi + 12]
+    mov rax, 10
+    and rax, 0x80000000
+    
 
     ret
