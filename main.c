@@ -28,7 +28,7 @@ extern int test();
 extern void ft_list_push_front(t_list **begin_list, void *data);
 extern int ft_list_size(t_list *begin_list);
 extern void ft_list_sort(t_list **begin_list, int (*cmp)());
-extern void ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *));
+extern int ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *));
 
 const char *GREEN = "\e[0;32m";
 const char *RED = "\e[0;31m";
@@ -89,22 +89,22 @@ void strcmp_test()
 	checkres = strcmp(wit, even) == ft_strcmp(wit, even);
 	printf("TEST: strcmp('Witness', 'Witness') -> standard = %d / ft = %d -> %s%s%s", strcmp(wit, even), ft_strcmp(wit, even), checkres ? GREEN : RED, checkres ? "OK\n" : "KO\n", RESET);
 	
-	checkres = strcmp(wit, more) == ft_strcmp(wit, more);
+	checkres = strcmp(wit, more) * ft_strcmp(wit, more) > 0;
 	printf("TEST: strcmp('Witness', 'Witneu') -> standard = %d / ft = %d -> %s%s%s", strcmp(wit, more), ft_strcmp(wit, more), checkres ? GREEN : RED, checkres ? "OK\n" : "KO\n", RESET);
 
-	checkres = strcmp(more, wit) == ft_strcmp(more, wit);
+	checkres = strcmp(more, wit) * ft_strcmp(more, wit) > 0;
 	printf("TEST: strcmp('Witneu', 'Witness') -> standard = %d / ft = %d -> %s%s%s", strcmp(more, wit), ft_strcmp(more, wit), checkres ? GREEN : RED, checkres ? "OK\n" : "KO\n", RESET);
 
-	checkres = strcmp(wit, less) == ft_strcmp(wit, less);
+	checkres = strcmp(wit, less) * ft_strcmp(wit, less) > 0;
 	printf("TEST: strcmp('Witness', 'Witnesswe') -> standard = %d / ft = %d -> %s%s%s", strcmp(wit, less), ft_strcmp(wit, less), checkres ? GREEN : RED, checkres ? "OK\n" : "KO\n", RESET);
 
-	checkres = strcmp(less, wit) == ft_strcmp(less, wit);
+	checkres = strcmp(less, wit) * ft_strcmp(less, wit) > 0;
 	printf("TEST: strcmp('Witnesswe', 'Witness') -> standard = %d / ft = %d -> %s%s%s", strcmp(less, wit), ft_strcmp(less, wit), checkres ? GREEN : RED, checkres ? "OK\n" : "KO\n", RESET);
 
-	checkres = strcmp(wit, empty) == ft_strcmp(wit, empty);
+	checkres = strcmp(wit, empty) * ft_strcmp(wit, empty) > 0;
 	printf("TEST: strcmp('Witness', '') -> standard = %d / ft = %d -> %s%s%s", strcmp(wit, empty), ft_strcmp(wit, empty), checkres ? GREEN : RED, checkres ? "OK\n" : "KO\n", RESET);
 
-	checkres = strcmp(empty, wit) == ft_strcmp(empty, wit);
+	checkres = strcmp(empty, wit) * ft_strcmp(empty, wit) > 0;
 	printf("TEST: strcmp('', 'Witness') -> standard = %d / ft = %d -> %s%s%s", strcmp(empty, wit), ft_strcmp(empty, wit), checkres ? GREEN : RED, checkres ? "OK\n" : "KO\n", RESET);
 }
 
@@ -148,26 +148,31 @@ void read_test()
 {
 	int fd = open("test.txt", O_RDONLY);
 	int fd2 = open("test.txt", O_WRONLY);
-	char buf[100];
+	char *buf = malloc(100);
+	bzero(buf, 100);
 	printf("\n-----------Test Read------------\n");
 
-	printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", ft_read(fd, 0, 10), buf);
+	printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", ft_read(fd, buf, 10), buf);
 	perror(" -> read");
 
-		printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", read(fd, 0, 10), buf);
+		printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", read(fd2, buf, 10), buf);
 	perror(" -> read");
 
 		printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", ft_read(fd, buf, 10), buf);
 	perror(" -> read");
 
-		printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", read(fd, buf, 10), buf);
+		printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", read(fd2, buf, 10), buf);
 	perror(" -> read");
 
-			printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", ft_read(fd2, buf, 10), buf);
+			printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", ft_read(fd, buf, 10), buf);
 	perror(" -> read");
 
 		printf("TEST: ft_read(fd, buf, 100) -> size: %zd -- %s\n", read(fd2, buf, 10), buf);
 	perror(" -> read");
+	bzero(buf, 100);
+
+	printf("TEST: ft_read(stdin(100max), buf, 100) -> size: %zd -- %s\n", ft_read(0, buf, 10), buf);
+	free(buf);
 }
 
 void strdup_test()
@@ -209,7 +214,7 @@ void strdup_test()
 
 	printf("e = %s, f = %s\n", e, f);
 
-	free(d);
+	free(f);
 }
 
 void atoi_base_test()
@@ -227,69 +232,125 @@ void atoi_base_test()
 	printf("TEST: ft_atoi_base('51A20', '0123456789') -> %d\n", ft_atoi_base("51A20", "0123456789"));
 	printf("TEST: ft_atoi_base('51A20', '01234567 89') -> %d\n", ft_atoi_base("51A20", "0123456 789"));
 	printf("TEST: ft_atoi_base('51A20', '\\n0123456789') -> %d\n", ft_atoi_base("51A20", "\n0123456789"));
+	printf("TEST: ft_atoi_base('51A20', '\\n0123456789') -> %d\n", ft_atoi_base("51A20", "\n0123456789"));
+	printf("TEST: ft_atoi_base('NULL', '\\n0123456789') -> %d\n", ft_atoi_base(NULL, "\n0123456789"));
+	printf("TEST: ft_atoi_base('51A20', 'NULL') -> %d\n", ft_atoi_base("51A20", NULL));
 
 }
-int lower(void *d1, void *d2)
-{return ((long long)d1 > (long long)d2);}
+
+void print_list(t_list **start)
+{
+	t_list *tmp = *start;
+	if (tmp == NULL)
+	{
+		printf("-> List is empty\n");
+		return ;
+	}
+	while (tmp != NULL)
+	{
+		printf("-> %s ", (char *)tmp->data);
+		tmp = tmp->next;
+	}
+	printf("\n");
+}
+
+void clear_list(t_list **start)
+{
+	t_list *tmp = *start;
+	t_list *tmp2;
+	while (tmp != NULL)
+	{
+		tmp2 = tmp;
+		tmp = tmp->next;
+		free(tmp2->data);
+		free(tmp2);
+	}
+}
+
+void list_test()
+{
+	t_list *start = NULL;
+	t_list *start2 = NULL;
+	t_list *start3 = NULL;
+
+	printf("\n-----------Test List------------\n");
+
+	printf("lst1 = NULL, lst2 = NULL, lst3 = NULL\n");
+	printf("-> list size = %d\n", ft_list_size(start));
+
+	ft_list_push_front(&start, strdup("dfedefzef"));
+	ft_list_push_front(&start, strdup("qswCzac"));
+	ft_list_push_front(&start, strdup("azqaadv"));
+	ft_list_push_front(&start, strdup("vethfbv"));
+	ft_list_push_front(&start, strdup("fgtrfbdv"));
+	ft_list_push_front(&start, strdup("qascW"));
+	ft_list_push_front(&start, strdup("byrn"));
+	print_list(&start);
+
+	printf("-> list size = %d\n", ft_list_size(start));
+
+	printf("====> Sort list\n");
+	ft_list_sort(&start, &strcmp);
+	print_list(&start);
+	printf("====> Sort list2 (empty)\n");
+	ft_list_sort(&start2, &strcmp);
+	print_list(&start2);
+
+	ft_list_push_front(&start3, strdup("byrn"));
+	printf("====> Sort list3 (one elem)\n");
+	ft_list_sort(&start3, &strcmp);
+	print_list(&start3);
+
+	//printf("====> Remove 'byrn' in lst3 (one elem)\n");
+	//ft_list_remove_if(&start3, "byrn", &strcmp, &free);
+	//print_list(&start3);
+
+	ft_list_push_front(&start3, strdup("byrn"));
+	ft_list_push_front(&start3, strdup("michel"));
+	ft_list_push_front(&start3, strdup("ohdklsf"));
+	ft_list_push_front(&start3, strdup("byrn"));
+	ft_list_push_front(&start3, strdup("byrn"));
+	ft_list_push_front(&start3, strdup("ola"));
+	ft_list_push_front(&start3, strdup("byrn"));
+	printf("add 7 elems in lst3\n");
+	print_list(&start3);
+
+	//printf("====> Remove 'byrn' in lst3 \n");
+	//ft_list_remove_if(&start3, "byrn", &strcmp, &free);
+	//print_list(&start3);
+
+	printf("====> Remove 'byrn' in lst1 \n");
+	ft_list_remove_if(&start, "byrn", &strcmp, &free);
+	print_list(&start);
+
+	ft_list_sort(&start3, &strcmp);
+	printf("====> Sort list3\n");
+	print_list(&start3);
+
+	ft_list_remove_if(&start2, "byrn", &strcmp, &free);
+	printf("====> Remove 'byrn' in lst2 (empty)\n");
+	print_list(&start2);
+	clear_list(&start);
+	clear_list(&start2);
+	clear_list(&start3);
+
+}
 
 int main()
 {
-	//strlen_test();
+	strlen_test();
 
-	//strcpy_test();
+	strcpy_test();
 
-	//strcmp_test();
+	strcmp_test();
 
-	//write_test();
+	write_test();
 
-	//read_test();
+	read_test();
 
-	//strdup_test();
+	strdup_test();
 
-	//atoi_base_test();
+	atoi_base_test();
 
-	t_list *start = NULL;
-	t_list *start2 = NULL;
-
-	ft_list_push_front(&start, (void *)5);
-	ft_list_push_front(&start, (void *)3);
-	ft_list_push_front(&start, (void *)-2);
-	ft_list_push_front(&start, (void *)4);
-	ft_list_push_front(&start, (void *)8);
-	ft_list_push_front(&start, (void *)-1);
-
-	ft_list_push_front(&start2, "dfedefzef");
-	ft_list_push_front(&start2, "qswCzac");
-	ft_list_push_front(&start2, "azqaadv");
-	ft_list_push_front(&start2, "vethfbv");
-	ft_list_push_front(&start2, "fgtrfbdv");
-	ft_list_push_front(&start2, "qascW");
-	ft_list_push_front(&start2, "byrn");
-
-
-	ft_list_sort(&start, &lower);
-	ft_list_sort(&start2, &strcmp);
-
-	t_list* tmp = start;
-	while (tmp != NULL)
-	{
-		printf("-> %d\n", (int)tmp->data);
-		tmp = tmp->next;
-	}
-
-	ft_list_remove_if(&start, (void *)5, &lower, &free);
-
-	t_list* tmp2 = start;
-	while (tmp2 != NULL)
-	{
-		printf("-> %d\n", (int)tmp2->data);
-		tmp2 = tmp2->next;
-	}
-
-	while (start2 != NULL)
-	{
-		printf("-> %s\n", (char *)start2->data);
-		start2 = start2->next;
-	}
-	return 0;
+	list_test();
 }

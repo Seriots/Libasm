@@ -100,9 +100,16 @@ ft_atoi_base:
 	; Prolog
 	push rbp
 	mov rbp, rsp
+	
+	cmp rdi, 0 ; if base is null
+	je .end2
 
 	push rdi ; save str
 	mov rdi, rsi ; set first param to base
+
+
+	cmp rsi, 0 ; if str is null
+	je .end2
 
 	call check_base ; check if base is valid -> no double, no sign, no whitespace
 	cmp rax, 0 ; if base is invalid

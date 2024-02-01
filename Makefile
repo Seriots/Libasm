@@ -14,7 +14,6 @@ define SRCS :=
 	ft_list_size.s
 	ft_list_sort.s
 	ft_list_remove_if.s
-	test.s
 
 endef
 SRCS := $(strip $(SRCS))
@@ -34,7 +33,7 @@ LIB_PATH	=	./lib
 LIB_NAME	=	asm
 
 CC			=	clang
-CFLAGS		=	-Wall -Wextra -Werror -g3
+CFLAGS		=	-Wall -Werror -Wextra -g3
 
 SRC_MAIN	=	main.c
 OBJ_MAIN	=	$(addprefix $(OBJS_DIR)/,$(SRC_MAIN:.c=.o))

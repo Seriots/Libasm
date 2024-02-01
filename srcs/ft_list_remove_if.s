@@ -9,19 +9,24 @@ ft_list_remove_if:
 	push rbp
 	mov rbp, rsp
 
+	; reserve space for local variables
+	sub rsp, 128
+	
+	push rbx
+	push r12
+	push r13
+	push r14
+	push r15
+	push rdi
+
 	mov r14, rdx; compare function
 	mov r15, rcx; free function
-
-	push rdi
-	push rsi
+	mov rbx, rsi; data_ref
 
 	cmp rdi, 0
 	je .end
 
 	cmp r14, 0
-	je .end
-
-	cmp r15, 0
 	je .end
 
 	mov r12, 0; previous
@@ -32,7 +37,8 @@ ft_list_remove_if:
 		je .end
 
 		mov rdi, [r13]; data
-		pop rsi
+		mov rsi, rbx; data_ref
+
 		call r14;
 
 		cmp eax, 0
@@ -42,26 +48,35 @@ ft_list_remove_if:
 		jmp .notfirst
 	
 	.notfirst:
-		mov r8, [r13 + 8]; next
-		mov [r12 + 8], r8; previous->next = current->next
-		; mov rdi, [r13]
-		; call r15 ; free
-		; mov rdi, r13
-		; call free
-		jmp .loop		
+		mov r8, r13; save current
+		mov r13, [r13 + 8]; current->next 
+		mov [r12 + 8], r13; previous->next = current->next
+		
+		jmp .free
+
 
 
 	.first:
-		mov r8, [r13 + 8]; next
-		; mov rdi, [r13]
-		; call r15 ; free
-		; mov rdi, r13
-		; call free
-		pop rsi
+		
+		mov r8, r13; save current
+		mov r13, [r13 + 8]; next
 		pop rdi
-		mov [rdi], r8
+		mov [rdi], r13; *begin_list = next
 		push rdi
-		push rsi
+
+		jmp .free
+
+	.free:
+		cmp r15, 0
+		je .nofree
+		push r8
+		mov rdi, [r8]
+		call r15 ; free
+		pop r8
+		.nofree:
+			mov rdi, r8
+			call free
+
 		jmp .loop
 
 	.next:
@@ -71,9 +86,15 @@ ft_list_remove_if:
 
 	.end:
 
-		; Epilog
+	;	; Epilog
 		pop rdi
-		pop rsi
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+
+		add rsp, 128
 
 		mov rsp, rbp
 		pop rbp 

@@ -1,4 +1,0 @@
-rdi, rsi, rdx, rcx, r8, r9 -> Int register in the order (args of func)
-movzx rax, byte [rsp + 8 (16, 24, 32....)] -> pour recuperer les entiers suivants
-
-strace, file, readelf -a -> debugging command (>strace ./main)
